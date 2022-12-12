@@ -6,7 +6,8 @@ import matplotlib.patches as mpatches
 
 def file_reader(path):
     """
-    This goal of this function is to read csv file and returns two dataframe. 
+    This function  read csv file and returns two dataframe i.e. a normal 
+    dataframe and a transposed dataframe 
     Args: 
         path (str) : This is csv file path
         
@@ -22,12 +23,11 @@ def file_reader(path):
 
 def bar_plot(data, indicator_name):
     """
-    The goal of this function is to generate a bar plot of countries in a
-    period of time.
+    it generates a bar plot of countries in a period of time.
 
     Args: 
         data : The dataframe table 
-        indicator (str) : The type of indicator from the indicator column
+        indicator (str) : The name of indicator from the indicator column
     
     Return: 
         Bar chart 
@@ -41,12 +41,12 @@ def bar_plot(data, indicator_name):
 
 def line_plot(data, indicator_name, country1, country2):
     """
-    The goal of this function is to generate a line plot of two countries over a
-    period of time for a particular indicator.
+    it generate a line plot of two countries over a period of time 
+    for a particular indicator.
 
     Args: 
         data : The dataframe table 
-        indicator_name (str) : The type of indicator from the indicator column
+        indicator_name (str) : The name of te indicator from the indicator column.
         country1 : First country of interest
         country2 :  Second country of interest
     
@@ -64,4 +64,29 @@ def line_plot(data, indicator_name, country1, country2):
     plt.xticks(rotation = 90)
     plt.title('{} trend between{} and {}'.format(indicator_name, country1, country2))
     plt.legend(handles=[country1, country2])
+    plt.show()
+
+def country_correlation(data, country_name, cmap="crest"): 
+    """
+    It generate an heatmap that shows the correlations of indicators 
+    for a particular country.
+
+    Args: 
+        data : Table
+        country_name (str): The country of interests.
+        cmap (str, optional) :  The type of color pallete to match our visulaization. 
+
+    Return : 
+        Heatmap  
+    
+    """
+    country = data[country_name]
+    cols = []
+    for x in data[country_name].columns:
+        cols.append(x)
+    tbl_1 = data[country_name]
+    tbl = tbl_1[cols].iloc[:, :12]
+    sns.heatmap(tbl.corr(), cmap)
+    plt.title('{}'.format(country_name))
+    plt.legend([], frameon=False)
     plt.show()

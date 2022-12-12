@@ -27,13 +27,41 @@ def bar_plot(data, indicator_name):
 
     Args: 
         data : The dataframe table 
-        indicator (str) : The column of intrest
+        indicator (str) : The type of indicator from the indicator column
     
     Return: 
         Bar chart 
     
     """
     data1 = data[data['Indicator Name']== indicator_name]
-    data2 = data1.groupby(['Country Name'])['2018', '2019', '2020'].mean()[:10]
+    data2 = data1.groupby(['Country Name'])['2018', '2019', '2020'].mean()[-10:]
     data2.plot(kind = 'bar')
     plt.title('{} from 2018 till 2020'.format(indicator_name))
+
+
+def line_plot(data, indicator_name, country1, country2):
+    """
+    The goal of this function is to generate a line plot of two countries over a
+    period of time for a particular indicator.
+
+    Args: 
+        data : The dataframe table 
+        indicator_name (str) : The type of indicator from the indicator column
+        country1 : First country of interest
+        country2 :  Second country of interest
+    
+    Return: 
+        Line plot  
+    """
+    df_2 = data[data['Indicator Name']== indicator_name]
+    df_2 = df_2.groupby(['Country Name']).sum()
+    df_2_t = df_2.T
+    df_2_t = df_2_t[[country1, country2]][-10:]
+    plt.figure(figsize = (10, 10))
+    df_2_t.plot()
+    countrya = mpatches.Patch(color='blue', label='{}'.format(country1))
+    countryb = mpatches.Patch(color='orange', label='{}'.format(country2))
+    plt.xticks(rotation = 90)
+    plt.title('{} trend between{} and {}'.format(indicator_name, country1, country2))
+    plt.legend(handles=[country1, country2])
+    plt.show()

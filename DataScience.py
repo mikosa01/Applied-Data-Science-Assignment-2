@@ -63,7 +63,7 @@ def line_plot(data, indicator_name, country1, country2):
     countryb = mpatches.Patch(color='orange', label='{}'.format(country2))
     plt.xticks(rotation = 90)
     plt.title('{} trend between{} and {}'.format(indicator_name, country1, country2))
-    plt.legend(handles=[country1, country2])
+    plt.legend(handles=[countrya, countryb])
     plt.show()
 
 def country_correlation(data, country_1, country_2, country_3, cmap="crest"): 

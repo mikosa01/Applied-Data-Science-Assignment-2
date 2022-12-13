@@ -66,7 +66,7 @@ def line_plot(data, indicator_name, country1, country2):
     plt.legend(handles=[country1, country2])
     plt.show()
 
-def country_correlation(data, country_name, cmap="crest"): 
+def country_correlation(data, country_1, country_2, country_3, cmap="crest"): 
     """
     It generate an heatmap that shows the correlations of indicators 
     for a particular country.
@@ -80,13 +80,15 @@ def country_correlation(data, country_name, cmap="crest"):
         Heatmap  
     
     """
-    country = data[country_name]
-    cols = []
-    for x in data[country_name].columns:
-        cols.append(x)
-    tbl_1 = data[country_name]
-    tbl = tbl_1[cols].iloc[:, :12]
-    sns.heatmap(tbl.corr(), cmap)
-    plt.title('{}'.format(country_name))
-    plt.legend([], frameon=False)
-    plt.show()
+    countries = [country_1, country_2, country_3]
+    for country in countries: 
+        country = data[country]
+        cols = []
+        for x in data[country].columns:
+            cols.append(x)
+            tbl_1 = data[country]
+            tbl = tbl_1[cols].iloc[:, :12]
+            sns.heatmap(tbl.corr(), cmap)
+            plt.title('{}'.format(country))
+            plt.legend([], frameon=False)
+            plt.show()

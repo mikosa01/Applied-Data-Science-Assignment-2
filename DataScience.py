@@ -21,7 +21,7 @@ def file_reader(path):
     return df, df_t
 
 
-def bar_plot(data, indicator_name):
+def bar_plot(data, indicator_name_1, indicator_name_2):
     """
     it generates a bar plot of countries in a period of time.
 
@@ -33,13 +33,15 @@ def bar_plot(data, indicator_name):
         Bar chart 
     
     """
-    data1 = data[data['Indicator Name']== indicator_name]
-    data2 = data1.groupby(['Country Name'])['2018', '2019', '2020'].mean()[-10:]
-    data2.plot(kind = 'bar')
-    plt.title('{} from 2018 till 2020'.format(indicator_name))
+    indicators = [indicator_name_1, indicator_name_2]
+    for indicator in indicators: 
+        data1 = data[data['Indicator Name']== indicator]
+        data2 = data1.groupby(['Country Name'])['2018', '2019', '2020'].mean()[-10:]
+        data2.plot(kind = 'bar')
+        plt.title('{} from 2018 till 2020'.format(indicator))
 
 
-def line_plot(data, indicator_name, country1, country2):
+def line_plot(data, indicator_name_1, indicator_name_2, country1, country2):
     """
     it generate a line plot of two countries over a period of time 
     for a particular indicator.
@@ -53,18 +55,20 @@ def line_plot(data, indicator_name, country1, country2):
     Return: 
         Line plot  
     """
-    df_2 = data[data['Indicator Name']== indicator_name]
-    df_2 = df_2.groupby(['Country Name']).sum()
-    df_2_t = df_2.T
-    df_2_t = df_2_t[[country1, country2]][-10:]
-    plt.figure(figsize = (10, 10))
-    df_2_t.plot()
-    countrya = mpatches.Patch(color='blue', label='{}'.format(country1))
-    countryb = mpatches.Patch(color='orange', label='{}'.format(country2))
-    plt.xticks(rotation = 90)
-    plt.title('{} trend between{} and {}'.format(indicator_name, country1, country2))
-    plt.legend(handles=[countrya, countryb])
-    plt.show()
+    indicators = [indicator_name_1, indicator_name_2]
+    for indicator in indicators: 
+        df_2 = data[data['Indicator Name']== indicator_name]
+        df_2 = df_2.groupby(['Country Name']).sum()
+        df_2_t = df_2.T
+        df_2_t = df_2_t[[country1, country2]][-10:]
+        plt.figure(figsize = (10, 10))
+        df_2_t.plot()
+        countrya = mpatches.Patch(color='blue', label='{}'.format(country1))
+        countryb = mpatches.Patch(color='orange', label='{}'.format(country2))
+        plt.xticks(rotation = 90)
+        plt.title('{} trend between{} and {}'.format(indicator, country1, country2))
+        plt.legend(handles=[countrya, countryb])
+        plt.show()
 
 def country_correlation(data, country_1, country_2, country_3, cmap="crest"): 
     """
@@ -82,13 +86,12 @@ def country_correlation(data, country_1, country_2, country_3, cmap="crest"):
     """
     countries = [country_1, country_2, country_3]
     for country in countries: 
-        country = data[country]
+        place = data[country]
         cols = []
-        for x in data[country].columns:
+        for x in place.columns:
             cols.append(x)
-            tbl_1 = data[country]
-            tbl = tbl_1[cols].iloc[:, :12]
-            sns.heatmap(tbl.corr(), cmap)
-            plt.title('{}'.format(country))
-            plt.legend([], frameon=False)
-            plt.show()
+        tbl = place[cols].iloc[:, :12]
+        sns.heatmap(tbl.corr(), cmap)
+        plt.title('{}'.format(country))
+        plt.legend([], frameon=False)
+        plt.show()
